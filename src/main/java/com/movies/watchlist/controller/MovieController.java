@@ -1,5 +1,6 @@
 package com.movies.watchlist.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Movie;
@@ -14,7 +15,7 @@ public class MovieController {
     private MovieService movieService;
 
     @PostMapping
-    public Movie addMovie(@RequestBody Movie movie) {
+    public Movie addMovie(@Valid @RequestBody Movie movie) {
         return movieService.addMovie(movie);
     }
 

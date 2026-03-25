@@ -26,7 +26,13 @@ public class WatchlistController {
 
     @PutMapping("/{id}")
     public Watchlist updateWatchlist(@PathVariable Long id, @RequestParam String status) {
-        return watchlistService.updateWatchlist(id, WatchStatus.valueOf(status.toUpperCase()));
+        WatchStatus watchStatus;
+        try {
+            watchStatus = WatchStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid status: " + status + ". Must be PLANNED or WATCHED");
+        }
+        return watchlistService.updateWatchlist(id, watchStatus);
     }
     @DeleteMapping("/{id}")
     public String deleteWatchlist(@PathVariable Long id) {

@@ -1,5 +1,6 @@
 package com.movies.watchlist.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Review;
@@ -14,7 +15,7 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @PostMapping
-    public Review addReview(@RequestBody Review review) {
+    public Review addReview(@Valid @RequestBody Review review) {
         return reviewService.addReview(review);
     }
 
