@@ -23,7 +23,7 @@ public class Review {
 
     @Min(1) @Max(10) // Min rating should be 1 and should not exceed 10
     @Column(nullable = false)
-    private Integer rating;
+    private Double rating;
 
     private String comment;
 }
