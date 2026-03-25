@@ -1,15 +1,12 @@
 package com.movies.watchlist.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
 @Table(name = "movies")
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Movie {
 
     @Id
@@ -21,5 +18,7 @@ public class Movie {
 
     private String genre;
 
+    @Min(value = 1888, message = "Movies didn't exist before 1888")
+    @Max(value = 2100, message = "Invalid release year")
     private Integer releaseYear;
 }
