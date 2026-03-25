@@ -2,7 +2,7 @@ package com.movies.watchlist.dto;
 
 import lombok.*;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Data
 public class MovieDTO {
     private Long id;
     private String title;

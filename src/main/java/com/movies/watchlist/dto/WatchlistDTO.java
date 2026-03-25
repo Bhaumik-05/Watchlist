@@ -2,7 +2,7 @@ package com.movies.watchlist.dto;
 
 import lombok.*;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Data
 public class WatchlistDTO {
     private Long id;
     private String username;   // just the name, not the full User object

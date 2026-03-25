@@ -1,10 +1,9 @@
 package com.movies.watchlist.controller;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Movie;
 import com.movies.watchlist.service.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -29,6 +28,11 @@ public class MovieController {
         return movieService.getMovieById(id);
     }
 
+    @PutMapping("/{id}")
+    public Movie updateMovie(@PathVariable Long id, @RequestBody Movie movie) {
+        movie.setId(id); // crucial — without this, JPA would create a new row instead of updating
+        return movieService.updateMovie(movie);
+    }
     @DeleteMapping("/{id}")
     public String deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);

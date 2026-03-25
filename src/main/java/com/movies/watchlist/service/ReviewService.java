@@ -1,14 +1,13 @@
 package com.movies.watchlist.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Review;
 import com.movies.watchlist.entity.User;
 import com.movies.watchlist.entity.Movie;
 import com.movies.watchlist.repository.ReviewRepository;
 import com.movies.watchlist.repository.UserRepository;
 import com.movies.watchlist.repository.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -29,10 +28,10 @@ public class ReviewService {
         Long movieId = review.getMovie().getId();
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + movieId));
 
         review.setUser(user);
         review.setMovie(movie);
