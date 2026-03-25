@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import com.movies.watchlist.security.CustomUserDetailsService;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -41,9 +42,23 @@ public class SecurityConfig {
 
                 // Define which endpoints need authentication and which are public
                 .authorizeHttpRequests(auth -> auth
-                        // /users/register is public — anyone can register without logging in
+
+                        // completely public — no login needed
                         .requestMatchers("/users/register").permitAll()
-                        // Every other endpoint requires the user to be logged in
+
+                        // ADMIN only — managing the movie catalogue
+                        .requestMatchers(HttpMethod.POST,   "/movies").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,    "/movies/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
+
+                        // USER only — personal watchlist and reviews
+                        .requestMatchers(HttpMethod.POST,   "/watchlist").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT,    "/watchlist/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/watchlist/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST,   "/reviews").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/reviews/**").hasRole("USER")
+
+                        // everything else just needs to be logged in (GETs etc.)
                         .anyRequest().authenticated()
                 )
 
