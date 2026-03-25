@@ -3,7 +3,6 @@ package com.movies.watchlist.entity;
 import com.movies.watchlist.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
