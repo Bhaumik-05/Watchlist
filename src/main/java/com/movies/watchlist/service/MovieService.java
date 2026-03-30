@@ -16,7 +16,7 @@ public class MovieService {
     public Movie addMovie(Movie movie) {
 
         // Check if a movie with the same title already exists
-        Optional<Movie> existing = movieRepository.findByTitle(movie.getTitle());
+        Optional<Movie> existing = movieRepository.findByTitleIgnoreCase(movie.getTitle());
         if (existing.isPresent()) {
             throw new RuntimeException("Movie with title '" + movie.getTitle() + "' already exists");
         }
