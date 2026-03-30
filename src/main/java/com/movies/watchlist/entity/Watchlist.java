@@ -1,5 +1,6 @@
 package com.movies.watchlist.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.movies.watchlist.enums.WatchStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +26,6 @@ public class Watchlist {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private WatchStatus status;
-
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate addedDate;
 }
