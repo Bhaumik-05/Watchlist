@@ -4,7 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Movie;
 import com.movies.watchlist.repository.*;
-import java.util.List;
+
+import java.util.*;
 
 @Service
 public class MovieService {
@@ -13,6 +14,13 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public Movie addMovie(Movie movie) {
+
+        // Check if a movie with the same title already exists
+        Optional<Movie> existing = movieRepository.findByTitle(movie.getTitle());
+        if (existing.isPresent()) {
+            throw new RuntimeException("Movie with title '" + movie.getTitle() + "' already exists");
+        }
+
         return movieRepository.save(movie);
     }
 
