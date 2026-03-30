@@ -46,4 +46,16 @@ public class ReviewService {
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
     }
+    public String getAverageRating(Long movieId) {
+
+        Double avg = reviewRepository.findAverageRatingByMovieId(movieId);
+
+        // If no reviews exist for this movie, AVG() returns null from DB
+        // We return 0.0 in that case to avoid NullPointerException
+        if(avg == null)
+        {
+            avg = 0.0;
+        }
+        return "The average of this movie rating is " + avg;
+    }
 }

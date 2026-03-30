@@ -29,4 +29,8 @@ public class ReviewController {
         reviewService.deleteReview(id);
         return "Review deleted successfully";
     }
+    @GetMapping("/movie/{movieId}/avg")
+    public String getAverageRating(@PathVariable Long movieId) {
+        return reviewService.getAverageRating(movieId);
+    }
 }
