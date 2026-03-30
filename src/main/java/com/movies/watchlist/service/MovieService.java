@@ -3,7 +3,7 @@ package com.movies.watchlist.service;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Movie;
-import com.movies.watchlist.repository.MovieRepository;
+import com.movies.watchlist.repository.*;
 import java.util.List;
 
 @Service
@@ -25,7 +25,20 @@ public class MovieService {
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
     }
 
+    @Autowired
+    private WatchlistRepository watchlistRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
     public void deleteMovie(Long id) {
+        // Delete all watchlist entries for this movie
+        watchlistRepository.deleteAll(watchlistRepository.findByMovieId(id));
+
+        // Delete all reviews for this movie
+        reviewRepository.deleteAll(reviewRepository.findByMovieId(id));
+
+        // Now safely delete the movie
         movieRepository.deleteById(id);
     }
 
