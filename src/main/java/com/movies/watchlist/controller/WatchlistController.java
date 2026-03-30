@@ -37,6 +37,6 @@ public class WatchlistController {
     @DeleteMapping("/{id}")
     public String deleteWatchlist(@PathVariable Long id) {
         watchlistService.deleteFromWatchlist(id);
-        return "Deleted successfully";
+        return "Watchlist Deleted successfully";
     }
 }

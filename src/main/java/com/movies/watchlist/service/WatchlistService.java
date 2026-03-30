@@ -33,6 +33,13 @@ public class WatchlistService {
         Long userId = watchlist.getUser().getId();
         Long movieId = watchlist.getMovie().getId();
 
+        boolean alreadyExists = watchlistRepository
+                .findByUserIdAndMovieId(userId, movieId)
+                .isPresent();
+        if (alreadyExists) {
+            throw new RuntimeException("Movie is already in the watchlist for this user");
+        }
+
         // Step 2: Fetch the full User object from database using that id
         // If no user found with that id, throw an exception (caught by GlobalExceptionHandler)
         User user = userRepository.findById(userId)
@@ -62,7 +69,7 @@ public class WatchlistService {
         return watchlistRepository.findByUserId(userId);
     }
 
-    // FIXED: Instead of blindly saving whatever the client sends (dangerous),
+    // Instead of blindly saving whatever the client sends (dangerous),
     // we now:
     //   1. Fetch the existing entry from DB
     //   2. Only update the STATUS field
