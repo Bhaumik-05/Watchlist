@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Movie;
 import com.movies.watchlist.repository.*;
-
+import com.movies.watchlist.dto.*;
 import java.util.*;
 
 @Service
@@ -12,7 +12,8 @@ public class MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
-
+    @Autowired
+    private ReviewRepository reviewRepository;
     public Movie addMovie(Movie movie) {
 
         // Check if a movie with the same title already exists
@@ -24,20 +25,34 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+    public MovieDTO convertToDTO(Movie movie) {
+        MovieDTO dto = new MovieDTO();
+        dto.setTitle(movie.getTitle());
+        dto.setGenre(movie.getGenre());
+        dto.setReleaseYear(movie.getReleaseYear());
+        // Fetch average rating from reviews table for this movie
+        Double avg = reviewRepository.findAverageRatingByMovieId(movie.getId());
+
+        // If no reviews yet, set 0.0 instead of null
+        dto.setAverageRating(avg != null ? avg : 0.0);
+        return dto;
     }
 
-    public Movie getMovieById(Long id) {
-        return movieRepository.findById(id)
+    public MovieDTO getMovieByIdAsDTO(Long id) {
+        Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        return convertToDTO(movie);
+    }
+
+    public List<MovieDTO> getAllMoviesAsDTO() {
+        return movieRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Autowired
     private WatchlistRepository watchlistRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
 
     public void deleteMovie(Long id) {
         // Delete all watchlist entries for this movie

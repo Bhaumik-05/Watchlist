@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.movies.watchlist.entity.Movie;
 import com.movies.watchlist.service.MovieService;
+import com.movies.watchlist.dto.*;
 import java.util.List;
 
 @RestController
@@ -20,13 +21,13 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+    public List<MovieDTO> getAllMovies() {
+        return movieService.getAllMoviesAsDTO();
     }
 
     @GetMapping("/{id}")
-    public Movie getMovieById(@PathVariable Long id) {
-        return movieService.getMovieById(id);
+    public MovieDTO getMovieById(@PathVariable Long id) {
+        return movieService.getMovieByIdAsDTO(id);
     }
 
     @PutMapping("/{id}")
