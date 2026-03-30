@@ -48,6 +48,10 @@ public class ReviewService {
     }
     public String getAverageRating(Long movieId) {
 
+        // First verify the movie actually exists
+        movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + movieId));
+
         Double avg = reviewRepository.findAverageRatingByMovieId(movieId);
 
         // If no reviews exist for this movie, AVG() returns null from DB
